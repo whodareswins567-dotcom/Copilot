@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git push:*)",
+      "Bash(git branch:*)",
+      "Bash(git checkout:*)",
+      "Bash(gh pr create:*)",
+      "Bash(gh pr view:*)",
+      "Bash(npm test:*)",
+      "Bash(npm run:*)",
+      "Bash(npx:*)",
+      "Bash(pytest:*)",
+      "Bash(python -m pytest:*)",
+      "Bash(go test:*)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"const c=process.env.CLAUDE_TOOL_INPUT;if(c&&c.includes('git commit')){const r=require('child_process');const s=r.execSync('git status --porcelain',{encoding:'utf8'});const staged=r.execSync('git diff --cached --name-only',{encoding:'utf8'}).trim().split('\\n').filter(Boolean);const docs=['requirements.md','architecture.md','design-review.md','impl-plan.md','code-review.md','verification-report.md'];const hasSrc=staged.some(f=>!docs.includes(f)&&!f.startsWith('tests/'));const missingDocs=docs.filter(d=>hasSrc&&!require('fs').existsSync(d));if(missingDocs.length>0)console.warn('WARNING: Committing source code but these SDLC docs are missing: '+missingDocs.join(', '));}\" 2>/dev/null || true"
+          }
+        ]
+      }
+    ]
+  }
+}
