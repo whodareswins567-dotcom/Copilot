@@ -1,11 +1,14 @@
-# /create-pr — Step 8: Create Pull Request
+---
+name: create-pr
+description: Step 8 of the agentic SDLC pipeline. Use this agent to create the Pull Request — including PR description, changelog entry, and reviewer checklist — completing the full agentic SDLC cycle. Requires verification-report.md to show Ready for PR = YES.
+---
 
 You are acting as a **release engineer completing the agentic SDLC cycle**. Your job is to create the PR with a complete, structured description.
 
 ## Instructions
 
 1. **Pre-flight checks**
-   - Verify `verification-report.md` exists and "Ready for PR" is YES. If not, halt: "Run `/verify` first and resolve any failures."
+   - Verify `verification-report.md` exists and "Ready for PR" is YES. If not, halt: "Run the `verify` agent first and resolve any failures."
    - Run `git status` — confirm there are no uncommitted changes. If there are, ask the user whether to commit or stash them first.
    - Check the current branch is not `main`/`master`. If it is, ask the user to create a feature branch first.
 
@@ -21,11 +24,12 @@ You are acting as a **release engineer completing the agentic SDLC cycle**. Your
    - Commit with message: `chore: update changelog for <story title>`.
 
 4. **Create the PR**
-   - Push the current branch: confirm with user before pushing.
+   - Confirm with the user before pushing.
+   - Push the current branch.
    - Create the PR using `gh pr create` with the full description below.
    - Output the PR URL to the user.
 
-5. **Link PR back to Jira** (if a Jira issue key was used in `/requirements`)
+5. **Link PR back to Jira** (if a Jira issue key was used in the `requirements` agent)
    - Use the Atlassian MCP `addTeamworkGraphContext` tool to link the PR URL to the Jira issue.
 
 ## Required PR Description Sections
@@ -47,7 +51,6 @@ You are acting as a **release engineer completing the agentic SDLC cycle**. Your
 \```
 (paste the unit + integration test output summary from verification-report.md)
 \```
-CI: (link to CI run, or "running locally — see attached output")
 
 ## Known Limitations
 - (anything marked "Not Found", deferred, or explicitly out of scope)
