@@ -18,9 +18,11 @@ graph TD
 ## Components & Responsibilities
 | Component | File | Responsibility |
 |---|---|---|
-| UI Shell | index.html | Defines document structure: title, meta tags, link to style.css, empty `#app` container, script tag at end of body |
+| UI Shell | index.html | `<!DOCTYPE html>` HTML5 document with `<html lang="en">`; defines document structure: `<title>TODO App</title>`, UTF-8/viewport meta tags, relative link to `style.css` (`href="style.css"`), empty `#app` container, relative script tag at end of body (`src="script.js"`) |
 | Stylesheet | style.css | Applies minimal CSS reset (margin/padding/box-sizing) and centers `body` content via flexbox |
 | Bootstrap Script | script.js | Listens for `DOMContentLoaded` and logs "TODO App loaded" to the console; no other logic in this ticket |
+
+All asset references use paths relative to the repository root (no leading `/`), since the app is opened as a static file with no server — an absolute path would 404 and violate NFR-2.
 
 ## LocalStorage Schema
 Not applicable for this ticket — no data is persisted. LocalStorage usage is introduced in a later story once task management components exist.
@@ -31,6 +33,7 @@ Not applicable for this ticket — no data is persisted. LocalStorage usage is i
 3. Browser reaches the `<script>` tag at the end of `<body>` and loads `script.js`.
 4. `script.js` registers a `DOMContentLoaded` event listener.
 5. Once the DOM is fully parsed, the listener fires and logs `"TODO App loaded"` to the console — no DOM mutation, no storage write.
+6. Verification: open `index.html` directly in a browser and confirm via DevTools that the console shows only the "TODO App loaded" log — no 404s, syntax errors, or warnings (NFR-2).
 
 ## Technology Choices
 | Choice | Technology | Rationale |
