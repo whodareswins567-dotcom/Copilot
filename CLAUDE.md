@@ -2,17 +2,14 @@
 
 This project implements a full **8-step Agentic Software Delivery Lifecycle (SDLC)** powered entirely by Claude Code. Every phase — from requirements to PR — is driven through Claude agents, skills, and hooks.
 
-## How This Maps from GitHub Copilot
+## How It Works
 
-| Copilot Feature | Claude Code Equivalent |
-|---|---|
-| Copilot Chat / CLI | Claude Code CLI + chat |
-| Copilot Agent Mode | Claude agent mode (default) |
-| `.github/copilot-instructions.md` | `CLAUDE.md` (this file) |
-| Copilot custom instructions | `.claude/agents/*.md` subagents |
-| Copilot prompt files | `.claude/agents/*.md` subagents |
-| Copilot skills | Skills via `Skill` tool |
-| Copilot hooks | `.claude/settings.json` hooks |
+| Component | Location | Purpose |
+|---|---|---|
+| Project instructions | `CLAUDE.md` (this file) | Global rules and context for all agents |
+| SDLC agents | `.claude/agents/*.md` | One agent per SDLC phase |
+| Permissions + hooks | `.claude/settings.json` | Auto-allowed git/test commands + commit guard |
+| Atlassian MCP | `.mcp.json` | Jira and Confluence integration |
 
 ## SDLC Phases
 
