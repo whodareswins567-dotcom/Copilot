@@ -1,4 +1,49 @@
-# Requirements: Project Setup & Base Structure
+# Requirements: Add a Task
+
+## Source
+- Jira ticket: [TODO-4](https://thearchitect123.atlassian.net/browse/TODO-4) — "TODO-2 — Add a Task"
+- Fetched: 2026-09-07
+- Builds on: [TODO-2](https://thearchitect123.atlassian.net/browse/TODO-2) base structure (`index.html`, `style.css`, `script.js`)
+
+## User Story
+As a user, I want to type a task and press a button to add it, so that I can record things I need to do.
+
+## Functional Requirements
+| ID | Requirement | Priority |
+|---|---|---|
+| FR-1 | A text input and an "Add" button must be visible on the page | High |
+| FR-2 | Clicking "Add" with text in the input adds the task to a list below | High |
+| FR-3 | The input clears after a task is successfully added | High |
+| FR-4 | Submitting an empty or whitespace-only input shows an inline error message near the input and does not add a task | High |
+| FR-5 | Pressing Enter in the input field also submits the task | High |
+
+## Non-Functional Requirements
+None explicitly stated in this ticket.
+
+## Constraints & Assumptions
+- Frontend only: HTML, CSS, Vanilla JavaScript — no frameworks or build tools
+- Builds on the existing `index.html`/`style.css`/`script.js` structure from TODO-2 (the `<div id="app"></div>` placeholder)
+- Storage: LocalStorage persistence is out of scope for this ticket unless a future ticket specifies it
+- Inline error message is implemented as a simple text element shown/hidden near the input (not native browser `required` validation)
+- Task list rendering and persistence beyond the current session are out of scope unless specified elsewhere
+
+## Acceptance Criteria
+- [ ] A text input and an "Add" button are visible on the page
+- [ ] Clicking "Add" with text in the input adds the task to a list below
+- [ ] The input clears after a task is added
+- [ ] Submitting an empty or whitespace-only input shows an inline error message and does not add a task
+- [ ] Pressing Enter in the input field also submits the task
+
+## Open Questions Resolved
+| Question | Answer |
+|---|---|
+| Q1: Jira priority field (Medium) vs. description text ("Priority: High") — which is authoritative? | High (per description text) |
+| Q2: Does TODO-4 build on the TODO-2 base structure? | Yes |
+| Q3: How should the inline error message be implemented? | Simple text element shown/hidden near the input |
+
+---
+
+# Previous: Project Setup & Base Structure (TODO-2, archived)
 
 ## Source
 - Jira ticket: [TODO-2](https://thearchitect123.atlassian.net/browse/TODO-2)

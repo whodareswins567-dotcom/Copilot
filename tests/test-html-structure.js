@@ -35,8 +35,10 @@ check('FR-2: <script src="script.js"> is not in <head>', !/<script[^>]*src="scri
 check('FR-3: UTF-8 charset meta present', /<meta[^>]*charset="UTF-8"[^>]*>/i.test(head));
 check('FR-3: viewport meta present', /<meta[^>]*name="viewport"[^>]*content="[^"]*width=device-width[^"]*"/i.test(head));
 
-// FR-4: empty div#app placeholder
-check('FR-4: <div id="app"></div> present and empty', /<div\s+id="app">\s*<\/div>/i.test(body));
+// FR-4 (superseded by TODO-4): #app now contains the task form, error element, and task list
+check('FR-4 (TODO-4): #app contains the task form', /<div\s+id="app">[\s\S]*<form\s+id="task-form">[\s\S]*<\/div>/i.test(body));
+check('FR-4 (TODO-4): #app contains the inline error element', /<div\s+id="app">[\s\S]*id="task-error"[\s\S]*<\/div>/i.test(body));
+check('FR-4 (TODO-4): #app contains the task list container', /<div\s+id="app">[\s\S]*<ul\s+id="task-list">[\s\S]*<\/div>/i.test(body));
 
 // Relative paths (no leading "/") per architecture
 check('Relative path: style.css href has no leading slash', !/href="\/style\.css"/i.test(head));
