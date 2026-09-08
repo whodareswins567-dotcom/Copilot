@@ -5,8 +5,8 @@
 - **Title:** Persist Tasks in LocalStorage
 - **Started:** 2026-09-08
 - **Last Updated:** 2026-09-08
-- **Last Completed Step:** 2 — architecture
-- **Current Step:** 3 — design-review
+- **Last Completed Step:** 3 — design-review
+- **Current Step:** 4 — impl-plan
 - **Overall Status:** IN PROGRESS
 
 ---
@@ -44,14 +44,14 @@
 ---
 
 ### Step 3 — design-review
-- **Status:** TODO
-- **Started:** —
-- **Completed:** —
+- **Status:** DONE
+- **Started:** 2026-09-08
+- **Completed:** 2026-09-08
 - **Output:** `design-review.md`
-- **Verdict:** —
-- **Critical/High Findings:** —
+- **Verdict:** APPROVED WITH CHANGES
+- **Critical/High Findings:** 3 HIGH (all fixed in architecture.md)
 - **Blocking Issues:** —
-- **Notes:** —
+- **Notes:** H-01 Array.isArray guard added to loadTasks; H-02 const in-place mutation pattern documented; H-03 schema evolution risk documented. M-01 loadTasks call site moved before DOM guard; M-02 localStorage mock interface specified; M-03 per-element string filter added.
 
 ---
 
@@ -120,6 +120,6 @@
 
 To resume this ticket from the last completed step, tell Claude:
 
-> "Resume ticket TODO-10. The log is at `logs/TODO-10_persist-tasks-localstorage.md`. Last completed step was 2 — architecture. Start from step 3."
+> "Resume ticket TODO-10. The log is at `logs/TODO-10_persist-tasks-localstorage.md`. Last completed step was 3 — design-review. Start from step 4."
 
 Claude will read this file, confirm the current state, and invoke the correct agent.
