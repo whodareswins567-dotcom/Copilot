@@ -46,15 +46,13 @@ function saveTasks() {
 
 function loadTasks() {
     try {
-        var raw = localStorage.getItem('todos');
+        let raw = localStorage.getItem('todos');
         if (raw === null) { return; }           // FR-06: absent key -> stay []
-        var parsed = JSON.parse(raw);           // throws on bad JSON -> catch
+        let parsed = JSON.parse(raw);           // throws on bad JSON -> catch
         if (!Array.isArray(parsed)) { return; } // H-01: non-array JSON -> stay []
-        var filtered = parsed.filter(function(item) {
-            return typeof item === 'string';    // M-03: drop non-string elements
-        });
+        let filtered = parsed.filter((item) => typeof item === 'string'); // M-03: drop non-string elements
         tasks.length = 0;                       // H-02: const — must NOT reassign
-        tasks.push.apply(tasks, filtered);
+        tasks.push(...filtered);
     } catch (_e) {
         // JSON.parse failure or SecurityError — silently leave tasks as []
         // (FR-07, NFR-01, NFR-06: no console.error)

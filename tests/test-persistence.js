@@ -236,6 +236,10 @@ check(
     'H-02: in-memory tasks accumulate correctly after load + addTask',
     app.elements['task-list'].children.length === 2
 );
+check(
+    'H-02: saveTasks persists both the pre-loaded and newly added task',
+    JSON.parse(mockLocalStorage.getItem('todos')).length === 2
+);
 
 // ---------------------------------------------------------------------------
 // Summary
