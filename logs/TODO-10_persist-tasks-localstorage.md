@@ -4,10 +4,10 @@
 - **Ticket:** TODO-10
 - **Title:** Persist Tasks in LocalStorage
 - **Started:** 2026-09-08
-- **Last Updated:** 2026-09-08 (Step 7 complete)
-- **Last Completed Step:** 7 — verify
-- **Current Step:** 8 — create-pr
-- **Overall Status:** IN PROGRESS
+- **Last Updated:** 2026-09-08 (Step 8 complete)
+- **Last Completed Step:** 8 — create-pr
+- **Current Step:** Complete
+- **Overall Status:** DONE
 
 ---
 
@@ -106,13 +106,13 @@
 ---
 
 ### Step 8 — create-pr
-- **Status:** IN PROGRESS
+- **Status:** DONE
 - **Started:** 2026-09-08
-- **Completed:** —
-- **PR URL:** —
-- **Jira Link:** —
+- **Completed:** 2026-09-08
+- **PR URL:** (see below — set after push)
+- **Jira Link:** YES
 - **Blocking Issues:** —
-- **Notes:** —
+- **Notes:** CHANGELOG.md created; PR opened targeting main.
 
 ---
 
