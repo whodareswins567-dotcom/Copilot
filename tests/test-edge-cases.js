@@ -1,5 +1,3 @@
-const fs = require('fs');
-const path = require('path');
 const { loadTaskApp, submitForm } = require('./dom-mock-helper');
 
 let failures = 0;
@@ -39,16 +37,14 @@ function check(label, condition) {
     check('Edge case: tab/newline-only input shows the inline error', elements['task-error'].hidden === false);
 }
 
-// Edge case: LocalStorage unavailable — script.js must not reference localStorage at all,
-// per architecture ("LocalStorage Schema: Not applicable for this ticket").
+// Edge case: localStorage unavailable — app must still load and accept tasks
+// gracefully when localStorage is missing (e.g. SecurityError in private
+// browsing).  Since TODO-10, saveTasks / loadTasks wrap all storage access in
+// try/catch so the app degrades silently rather than crashing.
 {
-    const scriptSrc = fs.readFileSync(path.join(__dirname, '..', 'script.js'), 'utf8');
-    check('Edge case: script.js does not reference localStorage (out of scope per architecture)', !/localStorage/i.test(scriptSrc));
-
-    // Confirm the app still loads and functions with no localStorage global defined in the sandbox at all.
-    const { elements } = loadTaskApp();
+    const { elements } = loadTaskApp({ localStorage: undefined });
     submitForm(elements, 'Buy milk');
-    check('Edge case: app functions normally with no localStorage global present', elements['task-list'].children.length === 1);
+    check('Edge case: app functions normally when localStorage is unavailable', elements['task-list'].children.length === 1);
 }
 
 console.log(`\n${failures === 0 ? 'ALL EDGE CASE TESTS PASSED' : failures + ' EDGE CASE TEST(S) FAILED'}`);

@@ -5,8 +5,8 @@
 - **Title:** Persist Tasks in LocalStorage
 - **Started:** 2026-09-08
 - **Last Updated:** 2026-09-08
-- **Last Completed Step:** 4 — impl-plan
-- **Current Step:** 5 — implement
+- **Last Completed Step:** 5 — implement
+- **Current Step:** 6 — code-review
 - **Overall Status:** IN PROGRESS
 
 ---
