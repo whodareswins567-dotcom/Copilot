@@ -1,4 +1,73 @@
-# Requirements: Add a Task
+# Requirements: Persist Tasks in LocalStorage
+
+## Source
+- Jira ticket: [TODO-10](https://thearchitect123.atlassian.net/browse/TODO-10) — "Persist Tasks in LocalStorage"
+- Fetched: 2026-09-08
+- Builds on: TODO-4 task-add functionality (`script.js` in-memory `tasks` array)
+
+## User Story
+
+> As a user,
+> I want my tasks to still be there when I refresh the page or reopen the browser,
+> So that I don't lose my list.
+
+**Priority:** High | **Points:** 2
+
+## Functional Requirements
+
+| ID | Requirement | Acceptance Criterion |
+|----|-------------|----------------------|
+| FR-01 | On every task addition, the current task list must be serialised to JSON and written to `localStorage` under the key `todos`. | After calling `addTask()` successfully, `localStorage.getItem('todos')` returns a JSON array that includes the newly added task. |
+| FR-02 | On every task deletion, the current task list must be serialised to JSON and written to `localStorage` under the key `todos`. | After a delete operation, `localStorage.getItem('todos')` returns a JSON array that no longer contains the deleted task. |
+| FR-03 | On every task status change (e.g. marking complete/incomplete), the current task list must be serialised to JSON and written to `localStorage` under the key `todos`. | After toggling a task's status, `localStorage.getItem('todos')` returns a JSON array that reflects the updated status. |
+| FR-04 | On page load (`DOMContentLoaded`), the app must read the `todos` key from `localStorage`, parse it, and render the stored tasks immediately — before any user interaction. | On a hard refresh, all previously saved tasks appear in the task list without requiring any user action. |
+| FR-05 | The `localStorage` key used for persistence must be exactly `todos` and the stored value must be a valid JSON array. | `JSON.parse(localStorage.getItem('todos'))` returns an `Array`; each element represents one task. |
+| FR-06 | If `localStorage` is empty (key absent or value is `null`), the app must start with an empty task list and must not throw an error. | When `localStorage` contains no `todos` key, the app loads cleanly with zero tasks rendered. |
+| FR-07 | If the value stored under `todos` is not valid JSON (corrupted data), the app must silently recover and start with an empty task list — no crash, no unhandled exception. | Setting `localStorage.setItem('todos', 'NOT_JSON')` and loading the page results in an empty list and no JavaScript errors in the browser console. |
+
+## Non-Functional Requirements
+
+| ID | Category | Requirement |
+|----|----------|-------------|
+| NFR-01 | Error Resilience | All `localStorage` read operations must be wrapped in a `try/catch` block so that `JSON.parse` failures or browser security restrictions never cause an unhandled exception. |
+| NFR-02 | Error Resilience | All `localStorage` write operations must be wrapped in a `try/catch` block so that quota-exceeded or security errors are caught and do not crash the application. A failed write may be silently ignored; the in-memory state remains authoritative. |
+| NFR-03 | Performance | Persistence writes must be synchronous and complete within the same event-loop tick as the mutation. No debouncing or batching is required given the expected task-list size (< 1 000 items). |
+| NFR-04 | Compatibility | The implementation must use the native `localStorage` Web API only — no third-party persistence libraries. |
+| NFR-05 | Data Integrity | The JSON representation stored in `localStorage` must be the single, complete task list at the time of each write. Partial or incremental writes are not permitted. |
+| NFR-06 | Observability | No new `console.error` or unhandled-rejection events must appear in the browser console during normal operation or during the graceful-degradation (corrupted data) path. |
+
+## Constraints & Assumptions
+
+- The app is plain vanilla JavaScript (`script.js` + `index.html`). The ticket description mentions React; this is incorrect — the actual codebase uses no framework.
+- Tasks in the current codebase are stored as plain strings in an in-memory array (`const tasks = []`). The persistence layer will serialise this same array structure.
+- `localStorage` is available in the target browser environments. Progressive enhancement for environments without `localStorage` is not required for this ticket.
+- There is no server-side persistence; `localStorage` is the only storage target.
+
+## Acceptance Criteria
+
+- [ ] Tasks are saved to LocalStorage on every add, delete, or status change
+- [ ] On page load, tasks are read from LocalStorage and rendered immediately
+- [ ] If LocalStorage is empty or corrupted, the app starts with an empty list (no crash)
+- [ ] The LocalStorage key used is `todos` and the value is a JSON array
+
+## Out of Scope
+
+- Server-side or database persistence
+- Synchronisation of tasks across multiple browser tabs or devices
+- Encryption or obfuscation of the stored task data
+- Migration of stored data when the data model changes in a future ticket
+- User-facing error messages when a `localStorage` write fails
+- Any changes to the visual UI
+- IndexedDB, sessionStorage, or cookie-based persistence
+- Introducing a framework (React, Vue, etc.)
+
+## Open Questions Resolved
+
+None. All acceptance criteria were provided in the ticket and no ambiguities remain.
+
+---
+
+# Previous: Add a Task (TODO-4, archived)
 
 ## Source
 - Jira ticket: [TODO-4](https://thearchitect123.atlassian.net/browse/TODO-4) — "TODO-2 — Add a Task"

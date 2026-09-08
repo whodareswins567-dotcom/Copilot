@@ -1,4 +1,32 @@
-# Implementation Plan: Add a Task (TODO-4)
+# Implementation Plan: Persist Tasks in LocalStorage (TODO-10)
+
+## Tasks (dependency order)
+
+| # | Task ID | Task | Component | Depends On | Priority | Status |
+|---|---------|------|-----------|------------|----------|--------|
+| 1 | T-01 | Add `saveTasks()` to `script.js`: wrap `localStorage.setItem('todos', JSON.stringify(tasks))` in a `try/catch` that silently swallows quota-exceeded and SecurityError (NFR-02) | Persistence Layer | — | High | Done |
+| 2 | T-02 | Add `loadTasks()` to `script.js`: read `localStorage.getItem('todos')`, null-guard (FR-06), `JSON.parse` inside try/catch (FR-07, NFR-01), `Array.isArray` guard (H-01), per-element `typeof === 'string'` filter (M-03), in-place mutation `tasks.length = 0; tasks.push(...filtered)` (H-02) | Persistence Layer | T-01 | High | Done |
+| 3 | T-03 | Call `loadTasks()` at the top of `initTaskForm()`, before the DOM element guard (M-01) | UI Layer — init | T-02 | High | Done |
+| 4 | T-04 | Call `renderTaskList(list)` in `initTaskForm()` immediately after the DOM guard passes, so persisted tasks are rendered on page load (FR-04) | UI Layer — init | T-02, T-03 | High | Done |
+| 5 | T-05 | Call `saveTasks()` from `addTask()` after `tasks.push(rawInput.trim())` (FR-01) | UI Layer — mutation | T-01 | High | Done |
+| 6 | T-06 | Add localStorage mock infrastructure to `tests/dom-mock-helper.js`: `makeFreshLocalStorage()`, shared `mockLocalStorage` + `clearMockStorage()`, `makeQuotaExceededStorage()`, inject localStorage as a bare sandbox global in `loadTaskApp(overrides)` (M-02 from design-review) | Test Harness | T-01, T-02 | High | Done |
+| 7 | T-07 | Write `tests/test-persistence.js`: test cases for FR-01, FR-04, FR-05, FR-06, FR-07, H-01, H-02, M-03, NFR-01, NFR-02; update `tests/test-edge-cases.js` to remove the stale "no localStorage reference" assertion and replace it with a graceful-degradation check | Tests | T-06 | High | Done |
+
+## Blocked Tasks
+
+None. All tasks were completed in order.
+
+## Notes
+
+- FR-02 (save on delete) and FR-03 (save on toggle) are out of scope for this ticket. `deleteTask()` and `toggleTask()` are not yet implemented in the codebase. `saveTasks()` is defined and ready to wire in from those future operations without modification.
+- T-05 places the `saveTasks()` call inside `addTask()` (after the `tasks.push`) rather than in the form submit handler. This keeps persistence logic close to the state mutation and ensures any future direct caller of `addTask()` (e.g. from tests) also persists automatically.
+- The `loadTaskApp(overrides)` signature in the test harness is a non-breaking extension: existing test files that call `loadTaskApp()` with no arguments continue to receive a fresh, isolated localStorage instance by default.
+- Schema evolution risk: the current data model is `string[]`. When the future toggle ticket changes the model to `{text, done}[]`, a migration coercion must be added to `loadTasks()` before the type filter (see Open Risks in `docs/architecture.md`).
+- All 11 test suites pass after this change (25 new persistence tests; 0 regressions in the 9 pre-existing suites).
+
+---
+
+# Previous: Add a Task (TODO-4, archived)
 
 ## Tasks (dependency order)
 | # | Task | Component | Depends On | Priority | Blocked? | Status |
@@ -29,31 +57,3 @@
 - Tasks 5, 7, 9, 11, and 12 are the automated-test tasks required to close the risks called out in `docs/design-review.md` (form `preventDefault`, `textContent`-only rendering, accessible error announcement).
 - Task 13 substitutes manual verification for the accessibility announcement behavior, since no automated accessibility-tooling requirement is stated for this ticket. Verified via `tests/test-error-display.js`: the `role="alert"` error element (declared in `index.html` under task 1) toggles `hidden` correctly on invalid submission and clears on the next valid submission; a real-browser screen-reader check was not performed since this environment has no browser available.
 - **Known pre-existing conflict (out of scope for tasks 3-13):** `tests/test-html-structure.js` (FR-4 check) and `tests/test-nfr1-blank-page.js` (all checks) still assert `#app` is empty per TODO-2's NFR-1 ("blank page with no visible content"). This assertion has been superseded by TODO-4's FR-1 ("a text input and Add button must be visible"), and started failing once task 1 added visible markup inside `#app`. Updating those TODO-2 tests is not a task in this plan, so they were left as-is; flagging for a follow-up ticket/plan update to retire or rewrite the obsolete NFR-1 blank-page assertions.
-
----
-
-# Previous: Project Setup & Base Structure (TODO-2, archived)
-
-## Tasks (dependency order)
-| # | Task | Component | Depends On | Priority | Blocked? | Status |
-|---|---|---|---|---|---|---|
-| 1 | Set up repository root file structure — create empty `index.html`, `style.css`, `script.js` at repo root (no build tools/dependencies per NFR-3) | All | — | High | No | Done |
-| 2 | Define `index.html` skeleton: `<!DOCTYPE html>`, `<html lang="en">`, `<head>` with UTF-8 charset meta, viewport meta, `<title>TODO App</title>` | UI Shell | #1 | High | No | Done |
-| 3 | Add relative `<link href="style.css">` in `<head>` | UI Shell | #2 | High | No | Done |
-| 4 | Add empty `<div id="app"></div>` placeholder in `<body>` | UI Shell | #2 | High | No | Done |
-| 5 | Add relative `<script src="script.js"></script>` tag at end of `<body>` (not `defer` in `<head>`) | UI Shell | #2 | High | No | Done |
-| 6 | Implement `style.css` minimal reset: `margin: 0`, `padding: 0`, `box-sizing: border-box` | Stylesheet | #1 | High | No | Done |
-| 7 | Implement `style.css` flexbox centering on `body` (vertical + horizontal) | Stylesheet | #6 | High | No | Done |
-| 8 | Implement `script.js` `DOMContentLoaded` listener logging `"TODO App loaded"` | Bootstrap Script | #1 | High | No | Done |
-| 9 | Manual verification: open `index.html` directly in a browser, confirm blank page with only `#app` visible (NFR-1), console shows only the load log with no 404s/errors/warnings (NFR-2), and both asset links resolve via relative paths | UI Shell, Stylesheet, Bootstrap Script | #3, #4, #5, #7, #8 | High | No | Done (static validation — see Notes) |
-
-## Blocked Tasks
-| Task # | Blocked By | Reason |
-|---|---|---|
-| — | — | No blocked tasks; all dependencies are satisfied in sequence within this plan |
-
-## Notes
-- No component data model/interface tasks are needed — this ticket introduces no data, storage, or rendering logic (per architecture "LocalStorage Schema: Not applicable").
-- Task 9 substitutes for automated tests since NFR-2 verification is explicitly manual (Event Flow step 6 in `docs/architecture.md`); no test framework is introduced (NFR-3).
-- No GitHub Actions / CI workflow task is included — none is described in `docs/architecture.md` for this ticket.
-- All file/asset paths must remain relative (no leading `/`) per the architecture's path-resolution rule for static, serverless file access.
