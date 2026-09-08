@@ -5,8 +5,8 @@
 - **Title:** Persist Tasks in LocalStorage
 - **Started:** 2026-09-08
 - **Last Updated:** 2026-09-08
-- **Last Completed Step:** 3 — design-review
-- **Current Step:** 4 — impl-plan
+- **Last Completed Step:** 4 — impl-plan
+- **Current Step:** 5 — implement
 - **Overall Status:** IN PROGRESS
 
 ---
@@ -56,13 +56,13 @@
 ---
 
 ### Step 4 — impl-plan
-- **Status:** TODO
-- **Started:** —
-- **Completed:** —
+- **Status:** DONE
+- **Started:** 2026-09-08
+- **Completed:** 2026-09-08
 - **Output:** `impl-plan.md`
-- **Task Count:** —
+- **Task Count:** 7
 - **Blocking Issues:** —
-- **Notes:** —
+- **Notes:** T-01 (saveTasks), T-02 (loadTasks), T-03 (wire loadTasks before DOM guard), T-04 (renderTaskList after DOM guard), T-05 (wire saveTasks in addTask), T-06 (localStorage mock in dom-mock-helper.js), T-07 (test-persistence.js). FR-02 and FR-03 are out of scope (deleteTask/toggleTask not yet implemented).
 
 ---
 
@@ -71,7 +71,7 @@
 - **Started:** —
 - **Completed:** —
 - **Tasks Completed:** —
-- **Tasks Remaining:** —
+- **Tasks Remaining:** T-01, T-02, T-03, T-04, T-05, T-06, T-07
 - **Last Task Done:** —
 - **Blocking Issues:** —
 - **Notes:** —
@@ -120,6 +120,6 @@
 
 To resume this ticket from the last completed step, tell Claude:
 
-> "Resume ticket TODO-10. The log is at `logs/TODO-10_persist-tasks-localstorage.md`. Last completed step was 3 — design-review. Start from step 4."
+> "Resume ticket TODO-10. The log is at `logs/TODO-10_persist-tasks-localstorage.md`. Last completed step was 4 — impl-plan. Start from step 5."
 
 Claude will read this file, confirm the current state, and invoke the correct agent.
