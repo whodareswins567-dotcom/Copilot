@@ -7,7 +7,14 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="app"></div>
+    <div id="app">
+        <form id="task-form">
+            <input type="text" id="task-input" data-hook="task-input">
+            <button type="submit">Add</button>
+        </form>
+        <p id="task-error" role="alert" data-hook="task-error" hidden></p>
+        <ul id="task-list"></ul>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>

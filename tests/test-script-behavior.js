@@ -22,6 +22,12 @@ function runScriptAgainstMockDom() {
         addEventListener(event, handler) {
             listeners[event] = listeners[event] || [];
             listeners[event].push(handler);
+        },
+        getElementById() {
+            return null;
+        },
+        createElement(tag) {
+            return { tagName: tag, listeners: {}, children: [], addEventListener() {}, appendChild() {} };
         }
     };
 

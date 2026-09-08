@@ -13,28 +13,25 @@ function check(label, condition) {
 
 const bodyMatch = html.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
 const body = bodyMatch ? bodyMatch[1] : '';
+const appMatch = body.match(/<div\s+id="app">([\s\S]*?)<\/div>\s*<script/i);
+const appContent = appMatch ? appMatch[1] : '';
 
-// Strip the known, expected elements (the empty #app container and the script tag)
-// to see what — if anything — is left over that would render as visible content.
-let remainder = body
-    .replace(/<div\s+id="app">\s*<\/div>/i, '')
-    .replace(/<script[^>]*src="script\.js"[^>]*><\/script>/i, '')
+// TODO-4 supersedes TODO-2's NFR-1 (blank page): #app must now render the
+// task form, error element, and task list — and nothing beyond them.
+check('#app contains exactly one <form id="task-form">', (appContent.match(/<form\s+id="task-form">/gi) || []).length === 1);
+check('#app contains exactly one inline error element (id="task-error")', (appContent.match(/id="task-error"/gi) || []).length === 1);
+check('#app contains exactly one task list container (<ul id="task-list">)', (appContent.match(/<ul\s+id="task-list">/gi) || []).length === 1);
+
+// Strip known elements (whose own visible text, e.g. the "Add" button label, is expected
+// per FR-1) before checking for any stray/unexpected text left directly in #app.
+const strayText = appContent
+    .replace(/<form\s+id="task-form">[\s\S]*?<\/form>/i, '')
+    .replace(/<p\s+id="task-error"[^>]*>[\s\S]*?<\/p>/i, '')
+    .replace(/<ul\s+id="task-list">[\s\S]*?<\/ul>/i, '')
+    .replace(/<[^>]*>/g, '')
     .trim();
+check('#app has no visible text content outside the known elements', strayText.length === 0);
+check('body outside #app and the script tag has no extra markup', body.replace(/<div\s+id="app">[\s\S]*?<\/div>/i, '').replace(/<script[^>]*src="script\.js"[^>]*><\/script>/i, '').trim().length === 0);
 
-check('NFR-1: <body> contains only the empty #app div and the script tag (no other markup)', remainder.length === 0);
-
-// Ensure #app itself has no text/child content that would be visible.
-const appMatch = body.match(/<div\s+id="app">([\s\S]*?)<\/div>/i);
-const appContent = appMatch ? appMatch[1].trim() : null;
-check('NFR-1: #app container has no inner text/content', appContent === '');
-
-// Ensure there is no stray visible text anywhere directly in <body> (outside tags).
-const textOutsideTags = body.replace(/<[^>]*>/g, '').trim();
-check('NFR-1: no visible text nodes exist directly in <body>', textOutsideTags.length === 0);
-
-// Edge case: very long/garbage text accidentally left in body would fail the above checks,
-// confirming the blank-page guarantee is not just a shallow string match.
-check('Edge case: body markup length is minimal (no accidental large content blocks)', body.trim().length < 200);
-
-console.log(`\n${failures === 0 ? 'ALL NFR-1 (BLANK PAGE) TESTS PASSED' : failures + ' NFR-1 TEST(S) FAILED'}`);
+console.log(`\n${failures === 0 ? 'ALL VISIBLE-UI STRUCTURE TESTS PASSED' : failures + ' VISIBLE-UI STRUCTURE TEST(S) FAILED'}`);
 process.exitCode = failures === 0 ? 0 : 1;
