@@ -4,9 +4,9 @@
 - **Ticket:** TODO-10
 - **Title:** Persist Tasks in LocalStorage
 - **Started:** 2026-09-08
-- **Last Updated:** 2026-09-08 (Step 6 complete)
-- **Last Completed Step:** 6 — code-review
-- **Current Step:** 7 — verify
+- **Last Updated:** 2026-09-08 (Step 7 complete)
+- **Last Completed Step:** 7 — verify
+- **Current Step:** 8 — create-pr
 - **Overall Status:** IN PROGRESS
 
 ---
@@ -92,22 +92,22 @@
 ---
 
 ### Step 7 — verify
-- **Status:** IN PROGRESS
+- **Status:** DONE
 - **Started:** 2026-09-08
-- **Completed:** —
-- **Output:** `verification-report.md`
-- **Tests:** —
-- **Lint:** —
-- **Acceptance Criteria:** —
-- **Ready for PR:** —
+- **Completed:** 2026-09-08
+- **Output:** `docs/verification-report.md`
+- **Tests:** 101 passed / 0 failed (12 suites)
+- **Lint:** N/A — no linter configured; manual inspection clean
+- **Acceptance Criteria:** 3/4 fully passed; 1/4 partially met (delete/toggle save deferred by requirements scope)
+- **Ready for PR:** YES
 - **Blocking Issues:** —
-- **Notes:** —
+- **Notes:** M-01 from code review (missing H-02 storage assertion) confirmed resolved — assertion is present and passes. M-02 (impl-plan.md not updated) remains open but does not block PR.
 
 ---
 
 ### Step 8 — create-pr
-- **Status:** TODO
-- **Started:** —
+- **Status:** IN PROGRESS
+- **Started:** 2026-09-08
 - **Completed:** —
 - **PR URL:** —
 - **Jira Link:** —
@@ -120,6 +120,6 @@
 
 To resume this ticket from the last completed step, tell Claude:
 
-> "Resume ticket TODO-10. The log is at `logs/TODO-10_persist-tasks-localstorage.md`. Last completed step was 6 — code-review. Start from step 7."
+> "Resume ticket TODO-10. The log is at `logs/TODO-10_persist-tasks-localstorage.md`. Last completed step was 7 — verify. Start from step 8."
 
 Claude will read this file, confirm the current state, and invoke the correct agent.
