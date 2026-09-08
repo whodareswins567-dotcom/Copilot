@@ -109,7 +109,7 @@
 - **Status:** DONE
 - **Started:** 2026-09-08
 - **Completed:** 2026-09-08
-- **PR URL:** (see below — set after push)
+- **PR URL:** https://github.com/whodareswins567-dotcom/Copilot/pull/3
 - **Jira Link:** YES
 - **Blocking Issues:** —
 - **Notes:** CHANGELOG.md created; PR opened targeting main.
