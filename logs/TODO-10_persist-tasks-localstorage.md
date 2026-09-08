@@ -32,7 +32,7 @@
 - **Status:** DONE
 - **Started:** 2026-09-08
 - **Completed:** 2026-09-08
-- **Output:** `architecture.md`
+- **Output:** `docs/architecture.md`
 - **Key Decisions:**
   - Persistence logic added inline to `script.js` (two new functions: `loadTasks()` and `saveTasks()`); no new files or dependencies introduced.
   - In-memory `tasks[]` array remains the single authoritative runtime source; `localStorage` is a best-effort cache.
@@ -47,7 +47,7 @@
 - **Status:** DONE
 - **Started:** 2026-09-08
 - **Completed:** 2026-09-08
-- **Output:** `design-review.md`
+- **Output:** `docs/design-review.md`
 - **Verdict:** APPROVED WITH CHANGES
 - **Critical/High Findings:** 3 HIGH (all fixed in architecture.md)
 - **Blocking Issues:** —
@@ -67,12 +67,12 @@
 ---
 
 ### Step 5 — implement
-- **Status:** TODO
-- **Started:** —
-- **Completed:** —
-- **Tasks Completed:** —
-- **Tasks Remaining:** T-01, T-02, T-03, T-04, T-05, T-06, T-07
-- **Last Task Done:** —
+- **Status:** DONE
+- **Started:** 2026-09-08
+- **Completed:** 2026-09-08
+- **Tasks Completed:** T-01, T-02, T-03, T-04, T-05, T-06, T-07
+- **Tasks Remaining:** —
+- **Last Task Done:** T-07
 - **Blocking Issues:** —
 - **Notes:** —
 

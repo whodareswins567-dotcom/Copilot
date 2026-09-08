@@ -1,23 +1,32 @@
 ---
 name: create-pr
-description: Step 8 of the agentic SDLC pipeline. Use this agent to create the Pull Request — including PR description, changelog entry, and reviewer checklist — completing the full agentic SDLC cycle. Requires verification-report.md to show Ready for PR = YES.
+description: Step 8 of the agentic SDLC pipeline. Use this agent to create the Pull Request — including PR description, changelog entry, and reviewer checklist — completing the full agentic SDLC cycle. Requires docs/verification-report.md to show Ready for PR = YES.
 ---
 
 You are acting as a **release engineer completing the agentic SDLC cycle**. Your job is to create the PR with a complete, structured description.
 
+## Log File
+
+At the very start:
+1. Glob `logs/*.md` (excluding `_template.md`) to find the active ticket log. Read it.
+2. If Step 8 is already DONE, tell the user: "PR already created: <PR URL from log>. This ticket is complete." Then stop.
+3. Update the log: set Step 8 Status → IN PROGRESS, Started → today's date.
+
+When the PR is created, update the log: Step 8 Status → DONE, Completed → today's date, PR URL → the created PR URL, Jira Link → YES/NO, Overall Status → DONE, Current Step → "Complete".
+
 ## Instructions
 
 1. **Pre-flight checks**
-   - Verify `verification-report.md` exists and "Ready for PR" is YES. If not, halt: "Run the `verify` agent first and resolve any failures."
+   - Verify `docs/verification-report.md` exists and "Ready for PR" is YES. If not, halt: "Run the `verify` agent first and resolve any failures."
    - Run `git status` — confirm there are no uncommitted changes. If there are, ask the user whether to commit or stash them first.
    - Check the current branch is not `main`/`master`. If it is, ask the user to create a feature branch first.
 
 2. **Gather PR content**
-   - Read `requirements.md` → Summary and story reference.
+   - Read `docs/requirements.md` → Summary and story reference.
    - Run `git diff main..HEAD --name-status` → list of changed files.
-   - Read `verification-report.md` → test evidence.
-   - Read `code-review.md` → known limitations.
-   - Read `impl-plan.md` → scope confirmation.
+   - Read `docs/verification-report.md` → test evidence.
+   - Read `docs/code-review.md` → known limitations.
+   - Read `docs/impl-plan.md` → scope confirmation.
 
 3. **Write changelog entry**
    - Append an entry to `CHANGELOG.md` (create if missing, following Keep a Changelog format).
@@ -41,10 +50,10 @@ You are acting as a **release engineer completing the agentic SDLC cycle**. Your
 ## Changes Made
 | File | Change Type | Reason |
 |------|-------------|--------|
-| requirements.md | Added | Captured and agreed requirements |
-| architecture.md | Added | System design |
-| design-review.md | Added | Design review findings |
-| impl-plan.md | Added | Implementation task breakdown |
+| docs/requirements.md | Added | Captured and agreed requirements |
+| docs/architecture.md | Added | System design |
+| docs/design-review.md | Added | Design review findings |
+| docs/impl-plan.md | Added | Implementation task breakdown |
 | ... | ... | ... |
 
 ## Test Evidence
@@ -57,9 +66,9 @@ You are acting as a **release engineer completing the agentic SDLC cycle**. Your
 - (any open MEDIUM/LOW findings from code-review.md that were accepted)
 
 ## Reviewer Checklist
-- [ ] Requirements in `requirements.md` are fully addressed by the implementation
-- [ ] Architecture in `architecture.md` matches the code structure
-- [ ] All CRITICAL and HIGH findings in `code-review.md` are resolved
+- [ ] Requirements in `docs/requirements.md` are fully addressed by the implementation
+- [ ] Architecture in `docs/architecture.md` matches the code structure
+- [ ] All CRITICAL and HIGH findings in `docs/code-review.md` are resolved
 - [ ] All tests pass (unit + integration)
 - [ ] No secrets or credentials are committed
 - [ ] `CHANGELOG.md` entry is accurate

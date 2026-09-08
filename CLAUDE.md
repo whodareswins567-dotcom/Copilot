@@ -8,6 +8,9 @@ This project implements a full **8-step Agentic Software Delivery Lifecycle (SDL
 |---|---|---|
 | Project instructions | `CLAUDE.md` (this file) | Global rules and context for all agents |
 | SDLC agents | `.claude/agents/*.md` | One agent per SDLC phase |
+| Ticket logs | `logs/<ticket-id>_<slug>.md` | Per-ticket step log — state, results, resume point |
+| Log template | `logs/_template.md` | Blank log file copied for each new ticket |
+| Resume skill | `.claude/skills/resume.md` | `/resume` — picks up any ticket from its last completed step |
 | Permissions + hooks | `.claude/settings.json` | Auto-allowed git/test commands + commit guard |
 | Atlassian MCP | `.mcp.json` | Jira and Confluence integration |
 
@@ -17,13 +20,13 @@ Invoke these agents in order to drive the complete lifecycle:
 
 | Step | Agent | Output |
 |---|---|---|
-| 1 | `requirements` | `requirements.md` |
-| 2 | `architecture` | `architecture.md` |
-| 3 | `design-review` | `design-review.md` (updates `architecture.md`) |
-| 4 | `impl-plan` | `impl-plan.md` |
+| 1 | `requirements` | `docs/requirements.md` |
+| 2 | `architecture` | `docs/architecture.md` |
+| 3 | `design-review` | `docs/design-review.md` (updates `docs/architecture.md`) |
+| 4 | `impl-plan` | `docs/impl-plan.md` |
 | 5 | `implement` | Source code + tests |
-| 6 | `code-review` | `code-review.md` |
-| 7 | `verify` | Test output + `verification-report.md` |
+| 6 | `code-review` | `docs/code-review.md` |
+| 7 | `verify` | Test output + `docs/verification-report.md` |
 | 8 | `create-pr` | PR description, changelog, review checklist |
 
 All agents live in `.claude/agents/`. An additional `sdlc-reviewer` agent is available at any step for independent adversarial review.
@@ -32,10 +35,19 @@ All agents live in `.claude/agents/`. An additional `sdlc-reviewer` agent is ava
 
 - Always read the previous phase's output document before starting the next phase.
 - Never skip a phase; if a document is missing, halt and prompt the user to run the prior agent.
-- All generated documents live at the project root unless told otherwise.
+- All generated SDLC phase documents (`requirements.md`, `architecture.md`, `design-review.md`, `impl-plan.md`, `code-review.md`, `verification-report.md`) live in the `docs/` directory. Never write them to the project root.
 - When clarifying requirements or architecture, ask questions one at a time and wait for a response before asking the next.
 - The human is the final approver at every gate. Never auto-merge or auto-push without explicit user confirmation.
 - When acting as a reviewer (steps 3 and 6), be critical — surface real risks, not just praise.
+
+## Ticket Logging Rules
+
+- Every agent **must** read the ticket log at startup and write to it on completion — this is not optional.
+- Log files live in `logs/` and are named `<ticket-id>_<slug>.md` (e.g. `TODO-123_add-user-auth.md`). When no Jira key exists, use `no-ticket_<slug>.md`.
+- The `## State` block at the top of each log is the single source of truth for which step to resume from. Always keep it current.
+- The `implement` agent updates the log **after every individual task**, not just at step completion — this enables mid-step resume.
+- To resume any in-progress ticket, run `/resume` (invokes `.claude/skills/resume.md`).
+- Log files are committed alongside their corresponding phase document.
 
 ## Project Context
 
